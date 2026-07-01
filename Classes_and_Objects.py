@@ -31,3 +31,11 @@ class fruit:
         print(str(self.name)+" is/are tasty!")
 fruit1=fruit("Banana","yellow","medium")
 fruit1.taste_facts()
+class subject:
+    def __init__(self,name,skills):
+        self.name = name
+        self.skills = skills
+    def data(self):
+        print(str(self.name)+" requires "+str(self.skills)+" skills!")
+subject1 = subject("Maths","Problem - Solving")
+subject1.data()
