@@ -1,0 +1,32 @@
+import pygame, os, time
+pygame.init()
+running=True
+WIDTH = 700
+HEIGHT = 700
+screen = pygame.display.set_mode((WIDTH,HEIGHT))
+pygame.display.set_caption("Birthday_Animation")
+p1 = os.path.join("images","bday1.jpg")
+p2 = os.path.join("images","bday2.png")
+p3 = os.path.join("images","bday3.jpg")
+pic1 = pygame.image.load(p1)
+pic2= pygame.image.load(p2)
+pic3=pygame.image.load(p3)
+i1 = pygame.transform.scale(pic1,(WIDTH,HEIGHT))
+i2 = pygame.transform.scale(pic2,(WIDTH,HEIGHT))
+i3 = pygame.transform.scale(pic3,(WIDTH,HEIGHT))
+font1 = pygame.font.SysFont("Times New Roman",70)
+while running:
+    screen.blit(i1,(0,0))
+    text1 = font1.render("HAPPY",True,(123,123,123))
+    text2 = font1.render("BIRTHDAY",True,(123,123,123))
+    screen.blit(text1,(250,300))
+    screen.blit(text2,(300,400))
+    pygame.display.update()
+    time.sleep(2)
+    screen.blit(i2,(0,0))
+    pygame.display.update()
+    time.sleep(2)
+    screen.blit(i3,(0,0))
+    pygame.display.update()
+    time.sleep(2)
+#pygame.quit()
