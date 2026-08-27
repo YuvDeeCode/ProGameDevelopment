@@ -32,5 +32,45 @@ def draw_window(red,yellow,red_bullets,yellow_bullets,red_health,yellow_health):
     pygame.draw.rect(screen,black,border)
     healthtexty = font1.render(("Health: "+str(yellow_health)),True,white)
     healthtextr = font1.render(("Health: "+str(red_health)),True,white)
+    screen.blit(healthtexty,(10,20))
+    screen.blit(healthtextr,(650,20))
+    screen.blit(yellowspaceshipnew,(yellow.x,yellow.y))
+    screen.blit(redspaceshipnew,(red.x,red.y))
+    for bullet in red_bullets:
+        pygame.draw.rect(screen,red_colour,bullet)
+    for bullet in yellow_bullets:
+        pygame.draw.rect(screen,yellow_colour,bullet)
+    pygame.display.update()
 
+def yellow_movement(keyspressed,yellow):
+    if keyspressed[pygame.K_a] and yellow.x - shipvelocity >0:
+        yellow.x-=shipvelocity
+    if keyspressed[pygame.K_d] and yellow.x + shipvelocity + spaceshipwidth <border.x:
+        yellow.x+=shipvelocity
+    if keyspressed[pygame.K_s] and yellow.y + shipvelocity + spaceshipheight <HEIGHT - 15:
+        yellow.y+=shipvelocity
+    if keyspressed[pygame.K_w] and yellow.y - shipvelocity >0:
+        yellow.y-=shipvelocity
+
+def red_movement(keyspressed,red):
+    if keyspressed[pygame.K_LEFT] and red.x - shipvelocity > border.x + 10:
+        red.x-=shipvelocity
+    if keyspressed[pygame.K_RIGHT] and red.x +shipvelocity +spaceshipwidth <WIDTH:
+        red.x+=shipvelocity
+    if keyspressed[pygame.K_DOWN] and red.y + shipvelocity + spaceshipheight < HEIGHT - 15:
+        red.y+=shipvelocity
+    if keyspressed[pygame.K_UP] and red.y - shipvelocity >0:
+        red.y-=shipvelocity
+
+def bullet_handling(yellow_bullets,red_bullets,yellow,red):
+    for bullet in yellow_bullets:
+        bullet.x+=bulletvelocity
+        #
+        #
+    for bullet in red_bullets:
+        bullet.x-=bulletvelocity
+        #       
+        #
+
+def winnertext():
     
