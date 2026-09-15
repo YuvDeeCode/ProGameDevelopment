@@ -21,6 +21,10 @@ font1 = pygame.font.SysFont("Times New Roman",45)
 winnertext = pygame.font.SysFont("Times New Roman",70)
 rectvelocity = 5
 white = (255,255,255)
+ball_vel_x = 2
+ball_vel_y = 2
+fps = 60
+
 
 def draw_window(red_health,blue_health,red,blue,ball):
     healthtextb = font1.render(("Health: "+str(blue_health)),True,white)
@@ -30,6 +34,8 @@ def draw_window(red_health,blue_health,red,blue,ball):
     screen.blit(rectrednew,(red.x,red.y))
     screen.blit(rectbluenew,(blue.x,blue.y))
     screen.blit(pongb,(ball.x,ball.y))
+    pygame.draw.circle(screen,(255,0,255),ball.x,ball.y,20)
+    pygame.display.update()
 
 def blue_movement(keyspressed,blue):
     if keyspressed[pygame.K_s] and blue.y + rectvelocity + rectheight <HEIGHT - 50:
@@ -38,8 +44,38 @@ def blue_movement(keyspressed,blue):
             blue.y-=rectvelocity
 
 def red_movement(keyspressed,red):
-    if keyspressed[pygame.K_s] and red.y + rectvelocity + rectheight <HEIGHT - 50:
+    if keyspressed[pygame.K_UP] and red.y + rectvelocity + rectheight <HEIGHT - 50:
             red.y+=rectvelocity
-    if keyspressed[pygame.K_w] and red.y - rectvelocity >0:
+    if keyspressed[pygame.K_DOWN] and red.y - rectvelocity >0:
             red.y-=rectvelocity
-    
+
+'''def ball_handling(red,blue,ball):
+    ball.x+=ball_vel_x
+    ball.y+=ball_vel_y
+    #if ball.x > WIDTH or ball.x<0:
+     #     ball.x*=-1
+    if ball.y > HEIGHT or ball.y<0:
+          ball_vel_y*=-1
+    #Collision Program'''
+
+
+def winnertext(winnert):
+    winnertext.render(str(winnert)+" wins!")
+
+def main():
+      clock = pygame.time.Clock()
+      running = True
+      while running:
+            clock.tick(fps)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                    pygame.quit()
+
+            keyspressed = pygame.key.get_pressed()
+            red_movement(keyspressed,red)
+            blue_movement(keyspressed,blue)
+                      
+
+                        
+
