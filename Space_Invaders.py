@@ -1,10 +1,15 @@
+#SETUP
 import pygame,os,time
 pygame.init()
 running = True
-WIDTH = 700
+WIDTH = 850
 HEIGHT = 700
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("Space Invaders")
+
+
+
+#INITIALISING VARIABLES & UPLOADING IMAGES
 sy = os.path.join("images","yellow_spaceship.png")
 sr = os.path.join("images","red_spaceship.png")
 bg = os.path.join("images","rocket_bg.png")
@@ -28,8 +33,12 @@ maxbullets = 3
 bulletvelocity = 7
 shipvelocity = 5
 winnertext = pygame.font.SysFont("Times New Roman",70)
-border = pygame.Rect(345,0,10,700)
+border = pygame.Rect(425,0,10,700)
 fps = 60
+
+
+
+#MAIN FUNCTIONS
 def draw_window(red,yellow,red_bullets,yellow_bullets,red_health,yellow_health):
     screen.blit(background,(0,0))
     pygame.draw.rect(screen,black,border)
@@ -44,6 +53,7 @@ def draw_window(red,yellow,red_bullets,yellow_bullets,red_health,yellow_health):
     for bullet in yellow_bullets:
         pygame.draw.rect(screen,yellow_colour,bullet)
     pygame.display.update()
+
 
 def yellow_movement(keyspressed,yellow):
     if keyspressed[pygame.K_a] and yellow.x - shipvelocity >0:
@@ -84,8 +94,9 @@ def bullet_handling(yellow_bullets,red_bullets,yellow,red):
             red_bullets.remove(bullet)
         
 
-def winnertext(winnert):
-    #blit text
+def winnertextfunc(winnert):
+    winnertxt = winnertext.render(str(winnert)+" wins!",True,(255,0,255))
+    screen.blit(winnertxt,(425,350))
 
 def main():
     yellow = pygame.Rect(100,300,spaceshipwidth,spaceshipheight)
@@ -103,23 +114,23 @@ def main():
                 running = False
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_G and len(yellow_bullets)<maxbullets:
-                    bullet = pygame.Rect(yellow.x+yellow.spaceshipwidth,yellow.y+yellow.spaceshipheight//2-2,10,5)
+                if event.key == pygame.K_g and len(yellow_bullets)<maxbullets:
+                    bullet = pygame.Rect(yellow.x+55,yellow.y+40//2-2,10,5)#
                     yellow_bullets.append(bullet)
-                if event.key == pygame.K_P and len(red_bullets)<maxbullets:
-                    bullet = pygame.Rect(red.x+red.spaceshipwidth,red.y+red.spaceshipheight//2-2,10,5)
+                if event.key == pygame.K_p and len(red_bullets)<maxbullets:#
+                    bullet = pygame.Rect(red.x+55,red.y+40//2-2,10,5)
                     red_bullets.append(bullet)
-            if event.type == pygame.redhit:
-                redhealth -= 1
-            if event.type == pygame.yellowhit:
-                yellowhealth -= 1
+            if event.type == redhit:#
+                red_health -= 1
+            if event.type == yellowhit:#
+                yellow_health -= 1
         winnert = ""
         if red_health<=0:
             winnert = "Yellow"
         elif yellow_health<=0:
             winnert = "Red"
         if winnert != "":
-            winnertext(winnert)
+            winnertextfunc(winnert)
             break
         keyspressed = pygame.key.get_pressed()
         yellow_movement(keyspressed,yellow)
@@ -127,8 +138,8 @@ def main():
         bullet_handling(yellow_bullets,red_bullets,yellow,red)
         draw_window(red,yellow,red_bullets,yellow_bullets,red_health,yellow_health)
 
-main()
-if __name__=="__main__":
+
+if __name__=="__main__":#Why?
     main()       
 
 
