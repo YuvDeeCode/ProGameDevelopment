@@ -8,9 +8,11 @@ pygame.display.set_caption("Pong")
 pb = os.path.join("images","pong_ball.png")
 rb = os.path.join("images","bluerect.png")
 rr = os.path.join("images","redrect.jpg")
+bg = os.path.join("images","rocket_bg.png")
 pongb = pygame.image.load(rb)
 rectb = pygame.image.load(rb)
 rectr = pygame.image.load(rr)
+background = pygame.image.load(bg)
 rectwidth = 10
 rectheight = 50
 rectblue = pygame.transform.scale(rectb,(rectwidth,rectheight))
@@ -27,6 +29,7 @@ fps = 60
 
 
 def draw_window(red_health,blue_health,red,blue,ball):
+    screen.blit(background,(0,0))
     healthtextb = font1.render(("Health: "+str(blue_health)),True,white)
     healthtextr = font1.render(("Health: "+str(red_health)),True,white)
     screen.blit(healthtextb,(10,20))
@@ -63,18 +66,22 @@ def winnertext(winnert):
     winnertext.render(str(winnert)+" wins!")
 
 def main():
-      clock = pygame.time.Clock()
-      running = True
-      while running:
-            clock.tick(fps)
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                    pygame.quit()
+    red = pygame.Rect(600,300,rectwidth,rectheight)
+    blue = pygame.Rect(100,300,rectwidth,rectheight)
+    clock = pygame.time.Clock()
+    running = True
+    while running:
+        clock.tick(fps)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
 
-            keyspressed = pygame.key.get_pressed()
-            red_movement(keyspressed,red)
-            blue_movement(keyspressed,blue)
+        keyspressed = pygame.key.get_pressed()
+        red_movement(keyspressed,red)
+        blue_movement(keyspressed,blue)
+        pygame.display.update()
+main()
                       
 
                         
