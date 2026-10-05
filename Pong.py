@@ -13,6 +13,7 @@ pongb = pygame.image.load(pb)
 rectb = pygame.image.load(rb)
 rectr = pygame.image.load(rr)
 background = pygame.image.load(bg)
+pongball = pygame.transform.scale(pongb,(20,20))
 rectwidth = 10
 rectheight = 50
 rectrednew = pygame.transform.rotate(rectr,90)
@@ -36,7 +37,7 @@ def draw_window(red_health,blue_health,red,blue,ball):
     screen.blit(healthtextr,(650,20))
     screen.blit(rectred,(red.x,red.y))
     screen.blit(rectblue,(blue.x,blue.y))
-    screen.blit(pongb,(ball.x,ball.y))
+    screen.blit(pongball,(ball.x,ball.y))
     #pygame.draw.circle(screen,(255,0,255),ball.x,ball.y,20)
     pygame.display.update()
 
@@ -59,19 +60,29 @@ def ball_handling(ball):
     ball.x+=ball_vel_x
     ball.y+=ball_vel_y
     if ball.x > WIDTH or ball.x<0:
-          ball.x*=-1
+          ball_vel_x*=-1
     if ball.y > HEIGHT or ball.y<0:
           ball_vel_y*=-1
+
+def ball_collision(red,ball,blue): # Remember to call this and all functions.
     #Collision Program
+    global ball_vel_x
+    global ball_vel_y
+    if ball.colliderect(red) and ball_vel_x > 0:
+         ball_vel_x*= -1
+         ball.right = red.left
+    if ball.colliderect(blue) and ball_vel_x < 0:
+         ball_vell_x*=-1
+         ball.left = blue.right
+    
 
-
-def winnertext(winnert):
+def winnertextfunc(winnert):
     winnertext.render(str(winnert)+" wins!")
 
 def main():
     red = pygame.Rect(600,300,rectwidth,rectheight)
     blue = pygame.Rect(100,300,rectwidth,rectheight)
-    ball = pygame.Rect(ball.x,ball.y,30,30)
+    ball = pygame.Rect(300,300,30,30)
     red_health = 10
     blue_health = 10
     clock = pygame.time.Clock()
@@ -94,6 +105,8 @@ def main():
         draw_window(red_health,blue_health,red,blue,ball)
         red_movement(keyspressed,red)
         blue_movement(keyspressed,blue)
+        ball_handling(ball)
+        ball_collision(red,ball,blue)
         pygame.display.update()
 main()
                       
