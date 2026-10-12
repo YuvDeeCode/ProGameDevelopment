@@ -16,6 +16,8 @@ background = pygame.image.load(bg)
 pongball = pygame.transform.scale(pongb,(20,20))
 rectwidth = 10
 rectheight = 50
+bluepoint = pygame.USEREVENT+1
+redpoint = pygame.USEREVENT+2
 rectrednew = pygame.transform.rotate(rectr,90)
 rectbluenew = pygame.transform.rotate(rectb,90)
 rectblue = pygame.transform.scale(rectbluenew,(rectwidth,rectheight))
@@ -59,8 +61,13 @@ def ball_handling(ball):
     global ball_vel_y
     ball.x+=ball_vel_x
     ball.y+=ball_vel_y
-    if ball.x > WIDTH or ball.x<0:
+    if ball.x == WIDTH:
           ball_vel_x*=-1
+          pygame.event.post(pygame.event.Event(bluepoint))
+        
+    if ball.x==0:
+         ball_vel_x*=-1
+         pygame.event.post(pygame.event.Event(redpoint))
     if ball.y > HEIGHT or ball.y<0:
           ball_vel_y*=-1
 
@@ -70,9 +77,9 @@ def ball_collision(red,ball,blue): # Remember to call this and all functions.
     global ball_vel_y
     if ball.colliderect(red) and ball_vel_x > 0:
          ball_vel_x*= -1
-         ball.right = red.left
+         ball.right = red.left # Defines edges of object.
     if ball.colliderect(blue) and ball_vel_x < 0:
-         ball_vell_x*=-1
+         ball_vel_x*=-1
          ball.left = blue.right
     
 
@@ -93,14 +100,20 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
                 pygame.quit()
+            if event.type == bluepoint:#
+                red_health -= 1
+                ball = pygame.Rect(300,300,30,30)
+            if event.type == redpoint:#
+                blue_health -= 1
+                ball = pygame.Rect(300,300,30,30)
         winnert = ""
         if red_health<=0:
             winnert = "Blue"
         elif blue_health<=0:
             winnert = "Red"
-            if winnert != "":
-                winnertextfunc(winnert)
-                break
+        if winnert != "":
+            winnertextfunc(winnert)
+            break
         keyspressed = pygame.key.get_pressed()
         draw_window(red_health,blue_health,red,blue,ball)
         red_movement(keyspressed,red)
@@ -109,7 +122,6 @@ def main():
         ball_collision(red,ball,blue)
         pygame.display.update()
 main()
-                      
-
+#How to reduce health? -> Maybe return blue or return red for certain conditions in the function?
                         
 
