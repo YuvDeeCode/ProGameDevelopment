@@ -1,3 +1,4 @@
+#COLLIDERECT(Between TWO rectangles) VS COLLIDEPOINT
 import pygame, os, random
 pygame.init()
 running = True
@@ -34,6 +35,10 @@ ninr = pygame.Rect(300,500,100,50)
 wizardr = pygame.Rect(150,100,50,50)
 archerr = pygame.Rect(150,300,50,50)
 ninjar = pygame.Rect(150,500,50,50)
+start_pos = None
+end_pos = None
+dragging = False
+images = [(wizardr,wizr),(archerr,archr),(ninjar,ninr)]
 while running:
 
     for event in pygame.event.get():
@@ -41,22 +46,42 @@ while running:
             running = False
             pygame.quit()
         if event.type == pygame.MOUSEBUTTONDOWN:
-            global pos
-            pos = pygame.mouse.get_pos()
-            pygame.draw.circle(screen,(black),(pos),20,0)
+            if event.button==1:
+                pos = event.pos
+                for i_r,w_r in images:
+                    if i_r.collidepoint(pos):
+                        start_pos = i_r.center
+                        dragging = True
+                        break
+            '''pos = pygame.mouse.get_pos()
+            pygame.draw.circle(screen,(black),(pos),20,0)'''
             pygame.display.update()
         if event.type == pygame.MOUSEBUTTONUP:
-            global pos2
-            pos2 = pygame.mouse.get_pos()
-            pygame.draw.line(screen,(black),(pos),(pos2),5)
-            pygame.draw.circle(screen,(black),(pos),20,0)
-            pygame.display.update()
-    
-    if wizr.colliderect(pos2) and wizardr.colliderect(pos):
+            if event.button==1 and dragging:
+                end_pos = event.pos
+                correct = False
+                for i_r,w_r in images:
+                      if i_r.collidepoint(start_pos):
+                        if w_r.collidepoint(end_pos):
+                            correct=True
+                            break
+                if correct:
+                     colour = (0,255,0)
+                else:
+                     colour = (255,0,0)
+                pygame.draw.line(screen,colour,start_pos,end_pos,5)
+                '''pos2 = pygame.mouse.get_pos()
+            pygame.draw.line(screen,black,pos,pos2,5)
+            pygame.draw.circle(screen,black,pos,20,0)'''
+                pygame.display.update()
+                dragging = False
+                start_point = None
+                end_point = None
+    '''if wizr.colliderect(pos2) and wizardr.colliderect(pos):
         pygame.draw.line(screen,(0,255,0),(pos),(pos2),5)
     elif archr.colliderect(pos2) and archerr.colliderect(pos):
             pygame.draw.line(screen,(0,255,0),(pos),(pos2),5)
     elif ninr.colliderect(pos2) and ninjar.colliderect(pos):
-            pygame.draw.line(screen,(0,255,0),(pos),(pos2),5)
+            pygame.draw.line(screen,(0,255,0),(pos),(pos2),5)'''
             
     
